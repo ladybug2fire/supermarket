@@ -7,6 +7,7 @@ var GoodSchema = new Schema({
     addTime: {type: String},
     price: Number,
     status: Number,
+    amount: Number,
     desc: {type: String},
 });
 

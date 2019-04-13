@@ -30,19 +30,21 @@ app.use(session({
 }))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('uploads'))
-
-app.use(function(req, res, next){
-  if([/users/, /good/, /index/].some(e=>req.path.match(e))){
-    console.log('islogin', req.session.username)
-    if(req.session.username){
-      return next()
-    }else{
-      return res.redirect('/login')
-    }
-  }else{
-    next();
-  }
-})
+/**
+ * 路由拦截
+ */
+// app.use(function(req, res, next){
+//   if([/users/, /good/, /index/].some(e=>req.path.match(e))){
+//     if(req.session.username){
+//       return next()
+//     }else{
+//       return res.redirect('/login')
+//     }
+//   }else{
+//     next();
+//   }
+// })
+// 路由拦截结束
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
