@@ -80,7 +80,7 @@ router.get('/', function(req, res){
 });
 
 router.get('/api', function(req, res){
-    Good.find().sort({"_id":-1}).exec(function(err, docs){
+    Good.find({status: 1}).sort({"_id":-1}).exec(function(err, docs){
         if(err){
             res.json({
                 code: 500,
