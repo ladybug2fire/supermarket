@@ -1,0 +1,120 @@
+<div class="row">
+  <div class="col-xs-12">
+    <h3 class="header smaller lighter blue">订单管理列表</h3>
+
+    <div class="clearfix">
+      <div class="pull-right tableTools-container"></div>
+    </div>
+    <div class="table-header">
+      订单列表
+    </div>
+    <div>
+      <table
+        id="dynamic-table"
+        class="table table-striped table-bordered table-hover"
+      >
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>下单时间</th>
+            <th>操作员</th>
+            <th>金额</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% list.forEach(function(l){ %>
+          <tr>
+            <td>
+              <a href="#"><%- l._id %></a>
+            </td>
+            <td class="hidden-480"><%- l.addTime %></td>
+            <td><%- l.username %></td>
+            <td><%- l.price %></td>
+
+            <td>
+              <div class="hidden-sm hidden-xs action-buttons">
+                <a class="red" href="#">
+                  <i
+                    class="ace-icon fa fa-trash-o bigger-130"
+                    onclick="deleteOrder('<%- l._id %>')"
+                  ></i>
+                </a>
+              </div>
+
+              <div class="hidden-md hidden-lg">
+                <div class="inline pos-rel">
+                  <button
+                    class="btn btn-minier btn-yellow dropdown-toggle"
+                    data-toggle="dropdown"
+                    data-position="auto"
+                  >
+                    <i
+                      class="ace-icon fa fa-caret-down icon-only bigger-120"
+                    ></i>
+                  </button>
+
+                  <ul
+                    class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"
+                  >
+                    <li>
+                      <a
+                        href="#"
+                        class="tooltip-error"
+                        data-rel="tooltip"
+                        title="Delete"
+                        onclick="deleteOrder('<%- l._id %>')"
+                      >
+                        <span class="red">
+                          <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- page specific plugin scripts -->
+<script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/jquery.dataTables.bootstrap.min.js"></script>
+<script src="assets/js/dataTables.buttons.min.js"></script>
+<script src="assets/js/buttons.flash.min.js"></script>
+<script src="assets/js/buttons.html5.min.js"></script>
+<script src="assets/js/buttons.print.min.js"></script>
+<script src="assets/js/buttons.colVis.min.js"></script>
+<script src="assets/js/dataTables.select.min.js"></script>
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+  var deleteOrder = function(id) {
+    $.get(
+      "/order/delete",
+      {
+        id
+      },
+      function(res) {
+        if (res.code === 200) {
+          alert("删除成功");
+          window.location.reload();
+        }
+        console.log(res);
+      }
+    );
+  };
+  jQuery(function($) {
+    var myTable = $("#dynamic-table").DataTable({
+      bAutoWidth: false,
+
+      select: {
+        style: "multi"
+      }
+    });
+  });
+</script>

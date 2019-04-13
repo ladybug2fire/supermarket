@@ -26,10 +26,7 @@ router.post('/signup', function(req, res){
     }
     User.find({ username: req.body.username}, function(err, result){
         if(result.length){
-            res.json({
-                code: 500,
-                msg: '用户名被占用',
-            })
+            res.render('error', {message:'用户名被占用',error:{}, title: '用户名被占用', layout:false, username: ''})
         }else{
             console.log(req.body)
             var user = new User({
@@ -39,17 +36,10 @@ router.post('/signup', function(req, res){
             });
             user.save(function (err, result) {
                 if (err) {
-                    console.log("Error:" + err);
-                    res.json({
-                        code: 500,
-                        msg: err,
-                    })
+                    res.render('error', {message:'出错了',error:{}, title: '发生错误', layout:false, username: ''})
                 }
                 else {
-                    res.json({
-                        code: 200,
-                        msg: '创建账号成功'
-                    }) 
+                   res.redirect('/') 
                 }
             });
         }

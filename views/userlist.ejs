@@ -1,17 +1,13 @@
 <div class="row">
     <div class="col-xs-12">
-        <h3 class="header smaller lighter blue">商品管理列表</h3>
+        <h3 class="header smaller lighter blue">用户管理列表</h3>
 
         <div class="clearfix">
             <div class="pull-right tableTools-container"></div>
         </div>
         <div class="table-header">
-            商品列表
+            用户列表
         </div>
-
-        <!-- div.table-responsive -->
-
-        <!-- div.dataTables_borderWrap -->
         <div>
             <table id="dynamic-table" class="table table-striped table-bordered table-hover">
                 <thead>
@@ -89,38 +85,14 @@
             })
         }
 			jQuery(function($) {
-				//initiate dataTables plugin
 				var myTable = 
 				$('#dynamic-table')
-				//.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
 				.DataTable( {
 					bAutoWidth: false,
-					
-					
-					//"bProcessing": true,
-			        //"bServerSide": true,
-			        //"sAjaxSource": "http://127.0.0.1/table.php"	,
-			
-					//,
-					//"sScrollY": "200px",
-					//"bPaginate": false,
-			
-					//"sScrollX": "100%",
-					//"sScrollXInner": "120%",
-					//"bScrollCollapse": true,
-					//Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
-					//you may want to wrap the table inside a "div.dataTables_borderWrap" element
-			
-					//"iDisplayLength": 50
-			
 			
 					select: {
 						style: 'multi'
 					}
 			    } );
-			
-				
-				
-				
 			})
 		</script>
