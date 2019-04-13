@@ -1,0 +1,227 @@
+<div class="btn-group">
+  <button type="button" class="btn btn-default" onclick="genBar(0)">月</button>
+  <button type="button" class="btn btn-default" onclick="genBar(1)">周</button>
+</div>
+<div id="content">
+  <div class="demo-container">
+    <div id="placeholder" class="demo-placeholder"></div>
+  </div>
+</div>
+
+<script src="/assets/js/jquery.flot.min.js"></script>
+<script src="/assets/js/jquery.flot.resize.min.js"></script>
+<script>
+  function genBar(type = 1) {
+    $.get("/order/api", function(res) {
+      var data = res.data;
+      var newData = data.map(e => {
+        var date = new Date(e.addTime);
+        return {
+          price: e.price,
+          data: `${date.getFullYear()}-${date.getMonth() + 1}${
+            type === 1 ? "-" + date.getDate() : ""
+          }`
+        };
+      });
+      var group = new Map();
+      newData.forEach(e => {
+        if (group.has(e.data)) {
+          group.set(e.data, Number(group.get(e.data)) + Number(e.price));
+        } else {
+          group.set(e.data, Number(e.price));
+        }
+      });
+    //   a = {
+    //     labels: Array.from(group.keys()),
+    //     data: Array.from(group.values())
+    //   };
+      if (res.code != 200) {
+        alert("数据错误");
+        return;
+      }
+      console.log(Array.from(group))
+      $.plot(
+        "#placeholder",
+        [
+          {
+            data: Array.from(group),
+            bars: { show: true }
+          }
+        ],
+        {
+          series: {
+            bars: {
+              show: true,
+              barWidth: 0.6,
+              align: "center"
+            }
+          },
+          xaxis: {
+            mode: "categories",
+            showTicks: false,
+            gridLines: false
+          }
+        }
+      );
+    });
+  }
+
+  $(function() {
+      genBar(1);
+  });
+</script>
+<style>
+  * {
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+  }
+
+  body {
+    font: 18px "proxima-nova", Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+  }
+
+  a {
+    color: #069;
+  }
+  a:hover {
+    color: #28b;
+  }
+
+  h2 {
+    margin-top: 15px;
+    font: normal 32px "omnes-pro", Helvetica, Arial, sans-serif;
+  }
+
+  h3 {
+    margin-left: 30px;
+    font: normal 26px "omnes-pro", Helvetica, Arial, sans-serif;
+    color: #666;
+  }
+
+  p {
+    margin-top: 10px;
+  }
+
+  button {
+    font-size: 18px;
+    padding: 1px 7px;
+  }
+
+  input {
+    font-size: 18px;
+  }
+
+  input[type="checkbox"] {
+    margin: 7px;
+  }
+
+  #header {
+    position: relative;
+    width: 900px;
+    margin: auto;
+  }
+
+  #header h2 {
+    margin-left: 10px;
+    vertical-align: middle;
+    font-size: 42px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #000;
+  }
+
+  #content {
+    width: 880px;
+    margin: 0 auto;
+    padding: 10px;
+  }
+
+  #footer {
+    margin-top: 25px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+  }
+
+  .demo-container {
+    box-sizing: border-box;
+    width: 850px;
+    height: 450px;
+    padding: 20px 15px 15px 15px;
+    margin: 15px auto 30px auto;
+    border: 1px solid #ddd;
+    background: #fff;
+    background: linear-gradient(#f6f6f6 0, #fff 50px);
+    background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+    background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+    background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+    background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    -o-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    -ms-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .demo-placeholder {
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+  }
+
+  fieldset {
+    display: block;
+    -webkit-margin-start: 2px;
+    -webkit-margin-end: 2px;
+    -webkit-padding-before: 0.35em;
+    -webkit-padding-start: 0.75em;
+    -webkit-padding-end: 0.75em;
+    -webkit-padding-after: 0.625em;
+    min-width: -webkit-min-content;
+    border-width: 2px;
+    border-style: groove;
+    border-color: threedface;
+    border-image: initial;
+    padding: 10px;
+  }
+
+  .legend {
+    display: block;
+    -webkit-padding-start: 2px;
+    -webkit-padding-end: 2px;
+    border-width: initial;
+    border-style: none;
+    border-color: initial;
+    border-image: initial;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .legendLayer .background {
+    fill: rgba(255, 255, 255, 0.85);
+    stroke: rgba(0, 0, 0, 0.85);
+    stroke-width: 1;
+  }
+
+  input[type="radio"] {
+    margin-top: -1px;
+    vertical-align: middle;
+  }
+
+  .tickLabel {
+    line-height: 1.1;
+  }
+</style>

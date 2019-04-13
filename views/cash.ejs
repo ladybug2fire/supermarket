@@ -1,0 +1,153 @@
+<% var username,userid %>
+<div class="row">
+    <div class="goodlist col-sm-4" >
+        <h2>商品列表</h2>
+        <div id="good-list"></div>
+    </div>
+    <div class="cash col-sm-6">
+        <h2>收银台</h2>
+        <div class="cash-list" id="cash-list">
+        </div>
+        <div class="cash-footer" id="cash-footer">
+            <div>
+                <span class="cash-footer-label">数量</span>
+                <span id="count"></span>
+            </div>
+            <div>
+                <span class="cash-footer-label">合计</span>
+                <span id="amount"></span>
+            </div>
+            <button class="btn btn-info" type="button" onclick="buyIt()">
+				结算 
+			</button>
+        </div>
+    </div>
+</div>
+<script>
+var cart = [];
+var goodlist = [];
+$(function(){
+    $.get('/good/api', function(res){
+        if(res.code == 200 && res.data){
+            goodlist = res.data;
+            $('#good-list').html(res.data.map(e=>`
+                <div class="good-item row">
+                    <img src="${e.picUrl}" class="snap-shot" alt="">
+                    <div class="good-name col-sm-3">${e.goodname}</div>
+                    <div class="good-price col-sm-3">¥${e.price}</div>
+                    <div class="good-action col-sm-3" onclick="addGood('${e._id}')">添加</div>
+                </div>
+            `))
+        }
+    })
+    window.addGood = function(id, count=1){
+        let find = cart.find(e => e._id === id)
+        let good = goodlist.find(e=>e._id === id)
+        if (find) {
+            let newCount = find.count + count
+            find.count = newCount >= 0 ? newCount : 0
+        } else {
+            cart.push({...good, count})
+        }
+        render();
+    }
+    window.buyIt = function(){
+        let goods = cart.map(e=>{e.goodid = e._id; return e})
+        if (goods.length > 0) {
+            $.post('/order/add',{
+                goods,
+                price: cart.reduce((sum, e)=>(sum+=e.price * e.count),0),
+                username: '<%- username %>',
+                userid: '<%- userid %>',
+            }, function(res){
+                if(res.code===200){
+                    alert(res.msg)
+                    window.location.href="/order"
+                }
+            })
+        }
+    }
+    window.render = function(){
+        $('#count').html(cart.length);
+        var total = cart.reduce((sum, e)=>(sum+=e.price * e.count),0);
+        $('#amount').html('¥ '+ total);
+        $('#cash-list').html(
+            cart.map(e=>e.count ?
+            `<div class="good-item row">
+                    <img src="${e.picUrl}" class="snap-shot" alt="">
+                    <div class="good-name col-sm-3">${e.goodname}</div>
+                    <div class="good-price col-sm-3">¥${e.price}</div>
+                    <div class="good-action col-sm-5">
+                        <button onclick="addGood('${e._id}', -1)">-</button>
+                        ${e.count}
+                        <button onclick="addGood('${e._id}')">+</button>
+                    </div>
+                    <div class="good-price">¥${e.price * e.count}</div>
+            </div>`:'')
+        )
+        if(total > 0)$('#cash-footer').css('display', 'flex');
+    }
+})
+
+</script>
+<style>
+    .good-item{
+        display: flex;
+        align-items: center;
+        border: 1px solid #e4e7ed;
+        justify-content: flex-start;
+        border-radius: 2px;
+        padding: 5px;
+        margin: 2px 2px 2px 0px;
+    }
+    .good-name{
+        font-weight: bold;
+    }
+    .good-price{
+        color: red;
+        font-weight: bold;
+    }
+    .good-action{
+        color:skyblue;
+        cursor: pointer;
+    }
+    .good-action button{
+        color:skyblue;
+        border: 1px solid #e4e7ed;
+        border-radius: 16px;
+        font-size: 10px;
+        line-height: 16px;
+        height: 16px;
+        width: 16px;
+        cursor: pointer;
+    }
+    .goodlist{
+        width: 50%;
+        height: 100%;
+        overflow-y: scroll;
+        padding: 10px;
+        border: 1px solid #e4e7ed;
+        border-radius: 2px;
+    }
+    .snap-shot {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+    }
+    .cash-footer{
+        flex-direction: row;
+        font-size: 20px;
+        justify-content: flex-end;
+        font-weight: bold;
+        display: none;
+    }
+    #count,#amount{
+        color: red;
+    }
+    .cash-footer div{
+        margin-right: 10px;
+    }
+    .cash-footer.label{
+        font-weight: bold;
+    }
+</style>

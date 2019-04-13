@@ -79,6 +79,24 @@ router.get('/', function(req, res){
     })
 });
 
+router.get('/api', function(req, res){
+    Good.find().sort({"_id":-1}).exec(function(err, docs){
+        if(err){
+            res.json({
+                code: 500,
+                msg: err,
+            })
+        }else{
+            res.json({
+                code: 200,
+                msg: '获取成功',
+                data: docs,
+            })
+        }
+    })
+});
+
+
 router.get('/add', function(req, res){
     if(req.query.id){
         Good.findById(req.query.id,function(err, good){

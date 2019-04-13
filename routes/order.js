@@ -8,8 +8,26 @@ router.get('/', function(req, res, next){
   })
 })
 
+router.get('/api', function(req, res){
+  Order.find().sort({"_id":-1}).exec(function(err, docs){
+      if(err){
+          res.json({
+              code: 500,
+              msg: err,
+          })
+      }else{
+          res.json({
+              code: 200,
+              msg: '获取成功',
+              data: docs,
+          })
+      }
+  })
+});
+
+
 router.post('/add', function(req, res, next){
-  var order = new Order(req.body)
+  var order = new Order({...req.body, addTime: new Date().toLocaleString()})
   order.save(function(err, result){
     if (err) {
         res.json({
