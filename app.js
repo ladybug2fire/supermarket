@@ -32,17 +32,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('uploads'))
 
 app.use(function(req, res, next){
-  function has(path){
-    return paths.some()
-  }
   if([/users/, /good/, /index/].some(e=>req.path.match(e))){
+    console.log('islogin', req.session.username)
     if(req.session.username){
-      next()
+      return next()
     }else{
-      res.redirect('/login')
+      return res.redirect('/login')
     }
+  }else{
+    next();
   }
-  next();
 })
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
