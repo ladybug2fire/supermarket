@@ -27,7 +27,7 @@
             type="text"
             name="goodname"
             placeholder="商品名"
-            value="<%- item.goodname %>"
+            value="<%- item && item.goodname %>"
             required
             class="col-xs-10 col-sm-5"
           />
@@ -42,8 +42,8 @@
           商品图
         </label>
         <div class="col-xs-4">
-            <% if(item._id) { %>
-                <img class="snap-shot" src="<%- item.picUrl%>" alt="">
+            <% if(item && item._id) { %>
+                <img class="snap-shot" src="<%- item && item.picUrl%>" alt="">
             <% } else { %>
                 <input type="file" name="file" id="id-input-file-2" required/>
             <% } %>
@@ -63,7 +63,7 @@
             required
             type="text"
             name="amount"
-            value="<%- item.amount %>"
+            value="<%- item && item.amount %>"
             placeholder="库存"
             class="form-control"
           />
@@ -85,7 +85,7 @@
             type="text"
             name="price"
             required
-            value="<%- item.price %>"
+            value="<%- item && item.price %>"
             placeholder="售价"
             class="col-xs-10 col-sm-5"
           />
@@ -104,7 +104,7 @@
 
         <div class="col-sm-9">
             <label>
-                <input name="status" class="ace ace-switch ace-switch-5" type="checkbox" value="1" <% if(item.status ===1){%>checked<%}%>/>
+                <input name="status" class="ace ace-switch ace-switch-5" type="checkbox" value="1" <% if(item && item.status ===1){%>checked<%}%>/>
                 <span class="lbl" data-lbl="上架&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下架"></span>
             </label>
         </div>
@@ -119,7 +119,7 @@
         </label>
 
         <div class="col-sm-5">
-            <textarea name="desc" class="form-control" id="form-field-8" placeholder="商品描述"><%- item.desc %></textarea>
+            <textarea name="desc" class="form-control" id="form-field-8" placeholder="商品描述"><%- item && item.desc %></textarea>
         </div>
       </div>
 
@@ -163,8 +163,8 @@
   });
   var submitData = function () {
     var data = new FormData($('#goodForm')[0]);
-    var url = "<%- item._id ? '/good/edit': '/good/add' %>";
-    <% if(item._id) {%>
+    var url = "<%- item && item._id ? '/good/edit': '/good/add' %>";
+    <% if(item && item._id) {%>
         data.append('id', '<%- item._id %>')
     <% }%>
     if(!data.get("status")){
