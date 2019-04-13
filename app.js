@@ -3,7 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var expressLayouts = require('express-ejs-layouts');
+var session = require('express-session');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
@@ -11,19 +12,42 @@ var loginRouter = require('./routes/login');
 var app = express();
 
 // view engine setup
+app.use(expressLayouts);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.set('layout extractScripts', true)
+app.set('layout extractStyles', true)
 app.disable('view cache');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('saltfish'));
+app.use(session({
+    secret: 'saltfish',
+    resave: false,
+    saveUninitialized: true
+}))
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('uploads'))
 
+app.use(function(req, res, next){
+  function has(path){
+    return paths.some()
+  }
+  if([/users/, /good/, /index/].some(e=>req.path.match(e))){
+    if(req.session.username){
+      next()
+    }else{
+      res.redirect('/login')
+    }
+  }
+  next();
+})
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter);
+app.use('/good', require('./routes/good'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

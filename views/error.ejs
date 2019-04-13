@@ -1,3 +1,14 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<center>
+    <h1><%= message %></h1>
+    <h2><%= error.status %></h2>
+    <pre><%= error.stack %></pre>
+</center>
+
+<script>
+    window.onload = function() {
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 3000);
+    };
+</script>
+  

@@ -1,0 +1,98 @@
+<div id="signup-box" class="signup-box widget-box no-border">
+  <div class="widget-body">
+    <div class="widget-main">
+      <h4 class="header green lighter bigger">
+        <i class="ace-icon fa fa-users blue"></i>
+        新员工注册
+      </h4>
+      <div class="space-6"></div>
+      <p>输入以下详细信息:</p>
+      <form action="/login/signup" method="POST" id="signupForm" onsubmit='return checkForm()'>
+        <fieldset>
+          <label class="block clearfix">
+            <span class="block input-icon input-icon-right">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                class="form-control"
+                placeholder="电子邮件地址"
+                required
+              />
+              <i class="ace-icon fa fa-envelope"></i>
+            </span>
+          </label>
+
+          <label class="block clearfix">
+            <span class="block input-icon input-icon-right">
+              <input type="text" id="username" name="username" class="form-control" placeholder="用户名" required/>
+              <i class="ace-icon fa fa-user"></i>
+            </span>
+          </label>
+
+          <label class="block clearfix">
+            <span class="block input-icon input-icon-right">
+              <input type="password" id="password" name="password" class="form-control" placeholder="密码"required />
+              <i class="ace-icon fa fa-lock"></i>
+            </span>
+          </label>
+
+          <label class="block clearfix">
+            <span class="block input-icon input-icon-right" required>
+              <input
+                type="password"
+                id="confirm-password"
+                class="form-control"
+                placeholder="确认密码"
+              />
+              <i class="ace-icon fa fa-retweet"></i>
+            </span>
+          </label>
+
+          <div class="clearfix">
+            <button type="reset" class="width-30 pull-left btn btn-sm">
+              <i class="ace-icon fa fa-refresh"></i>
+              <span class="bigger-110">清空</span>
+            </button>
+
+            <button
+              type="submit"
+              class="width-65 pull-right btn btn-sm btn-success"
+            >
+              <span class="bigger-110">注册</span>
+              <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+            </button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+
+    <div class="toolbar center">
+      <a href="#" data-target="#login-box" class="back-to-login-link">
+        <i class="ace-icon fa fa-arrow-left"></i>
+        返回登录
+      </a>
+    </div>
+  </div>
+  <!-- /.widget-body -->
+</div>
+<!-- /.signup-box -->
+<script>
+    var checkForm = function(){
+        var username = $('#username').val();
+        var password = $('#password').val();
+        var email = $('#email').val();
+        var confirmPassword = $('#confirm-password').val();
+        if(!username || !password || !confirmPassword || !email){
+            alert('字段不能为空')
+            return false;
+        }
+        if(password !== confirmPassword){
+            alert("两个密码不一致")
+            return false;
+        }
+        return true;
+    }
+
+</script>
+

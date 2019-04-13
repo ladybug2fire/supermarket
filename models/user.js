@@ -3,9 +3,8 @@ var mongoose = require('../config/db'),
 
 var UserSchema = new Schema({
     username: { type: String },
-    userpwd: { type: String },
-    userage: { type: Number },
-    phone: {type: Number },
+    password: { type: String },
+    email: {type: String },
 });
 
 module.exports = mongoose.model('User',UserSchema);
