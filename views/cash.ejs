@@ -68,7 +68,7 @@ $(function(){
         }
     }
     window.render = function(){
-        $('#count').html(cart.length);
+        $('#count').html(cart.filter(e=>e.count).length);
         var total = cart.reduce((sum, e)=>(sum+=e.price * e.count),0);
         $('#amount').html('¥ '+ total);
         $('#cash-list').html(
