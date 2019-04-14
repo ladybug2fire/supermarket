@@ -29,6 +29,8 @@
                             发布时间
                         </th>
                         <th class="hidden-480">状态</th>
+                        <th class="hidden-480">库存</th>
+                        <th class="hidden-480">简介</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -49,6 +51,8 @@
 									<span class="label label-sm label-warning">已下架</span>
 								<% } %>
 							</td>
+							<td class="hidden-480"><%- l.amount %></td>
+							<td class="hidden-480"><%- l.desc %></td>
 							<td>
 								<div class="hidden-sm hidden-xs action-buttons">
 									<a class="green" href="#" onclick="editItem('<%- l._id %>')">

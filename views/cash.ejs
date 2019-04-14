@@ -54,15 +54,23 @@ $(function(){
     window.buyIt = function(){
         let goods = cart.map(e=>{e.goodid = e._id; return e})
         if (goods.length > 0) {
-            $.post('/order/add',{
-                goods,
-                price: cart.reduce((sum, e)=>(sum+=e.price * e.count),0),
-                username: '<%- username %>',
-                userid: '<%- userid %>',
-            }, function(res){
-                if(res.code===200){
-                    alert(res.msg)
-                    window.location.href="/order"
+            $.ajax({
+                url: '/order/add',
+                method: 'post',
+                data: {
+                    goods,
+                    price: cart.reduce((sum, e)=>(sum+=e.price * e.count),0),
+                    username: '<%- username %>',
+                    userid: '<%- userid %>',
+                },
+                success: function(res){
+                    if(res.code===200){
+                        alert(res.msg)
+                        window.location.href="/order"
+                    }
+                },
+                error: function () {
+                    alert("异常！");
                 }
             })
         }
