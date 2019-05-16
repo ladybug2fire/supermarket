@@ -33,17 +33,17 @@ app.use(express.static('uploads'))
 /**
  * 路由拦截
  */
-// app.use(function(req, res, next){
-//   if([/users/, /good/, /index/].some(e=>req.path.match(e))){
-//     if(req.session.username){
-//       return next()
-//     }else{
-//       return res.redirect('/login')
-//     }
-//   }else{
-//     next();
-//   }
-// })
+app.use(function(req, res, next){
+  if([/users/, /good/, /index/].some(e=>req.path.match(e))){
+    if(req.session.username){
+      return next()
+    }else{
+      return res.redirect('/login')
+    }
+  }else{
+    next();
+  }
+})
 // 路由拦截结束
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
