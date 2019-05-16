@@ -34,7 +34,7 @@ app.use(express.static('uploads'))
  * 路由拦截
  */
 app.use(function(req, res, next){
-  if([/users/, /good/, /index/].some(e=>req.path.match(e))){
+  if([/users/, /good/, /index/, /order/, /dashboard/, /cash/].some(e=>req.path.match(e))){
     if(req.session.username){
       return next()
     }else{
